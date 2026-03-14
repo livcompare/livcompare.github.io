@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="A free image and video comparison app for macOS."
+        />
+        <title>LIV Compare</title>
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                    "Helvetica Neue", Helvetica, Arial, sans-serif;
+                font-size: 17px;
+                line-height: 1.7;
+                color: #9a9aa0;
+                background: #0a0d14;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            .page {
+                max-width: 680px;
+                margin: 0 auto;
+                padding: 0 24px 80px;
+            }
+
+            /* ---- Header ---- */
+            .site-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 16px 0;
+                border-bottom: none;
+            }
+
+            .site-header + hr {
+                margin: 0;
+            }
+
+            .site-header .logo-link {
+                display: block;
+                line-height: 0;
+            }
+
+            .site-header .logo-link:hover {
+                text-decoration: none;
+            }
+
+            .site-header .header-logo {
+                height: 36px;
+                width: auto;
+                filter: brightness(0) invert(1);
+                transition: filter 0.15s ease;
+            }
+
+            .site-header .logo-link:hover .header-logo {
+                filter: brightness(0) saturate(100%) invert(42%) sepia(98%)
+                    saturate(2000%) hue-rotate(200deg) brightness(100%)
+                    contrast(100%);
+            }
+
+            .site-header nav {
+                display: flex;
+                gap: 24px;
+            }
+
+            .site-header nav a {
+                font-weight: 600;
+                font-size: 0.9em;
+                color: #f5f5f7;
+                border-bottom: 2px solid transparent;
+                padding: 4px 0;
+                transition: border-color 0.15s ease;
+            }
+
+            .site-header nav a:hover {
+                text-decoration: none;
+                border-bottom-color: #0a84ff;
+            }
+
+            /* ---- Hero ---- */
+            .hero {
+                text-align: center;
+                padding: 96px 0 80px;
+                position: relative;
+                overflow: hidden;
+                width: 100vw;
+                margin-left: calc(50% - 50vw);
+                margin-bottom: 32px;
+            }
+
+            .hero-media {
+                position: absolute;
+                inset: 0;
+                z-index: 0;
+            }
+
+            .hero-media video {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                display: block;
+            }
+
+            .hero::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background:
+                    linear-gradient(
+                        90deg,
+                        rgba(10, 13, 20, 0),
+                        rgba(10, 13, 20, 0.35) 20%,
+                        rgba(10, 13, 20, 0.35) 80%,
+                        rgba(10, 13, 20, 0)
+                    ),
+                    radial-gradient(
+                        circle at top,
+                        rgba(10, 13, 20, 0.08),
+                        rgba(10, 13, 20, 0.55)
+                    ),
+                    linear-gradient(
+                        180deg,
+                        rgba(10, 13, 20, 0.12),
+                        rgba(10, 13, 20, 0.65)
+                    );
+                z-index: 1;
+            }
+
+            .hero-content {
+                position: relative;
+                z-index: 2;
+            }
+
+            .hero .app-icon {
+                width: 128px;
+                height: 128px;
+                margin-bottom: 20px;
+            }
+
+            .hero h1 {
+                font-size: 2.8em;
+                font-weight: 700;
+                letter-spacing: -0.03em;
+                line-height: 1.1;
+                color: #f5f5f7;
+                margin-bottom: 12px;
+            }
+
+            .hero .tagline {
+                font-size: 1.15em;
+                color: #9a9aa0;
+                margin-bottom: 32px;
+                font-weight: 400;
+            }
+
+            .hero .meta {
+                font-size: 0.82em;
+                color: #4a5060;
+                margin-top: 12px;
+            }
+
+            .download-btn {
+                display: inline-block;
+                font-family: inherit;
+                font-size: 0.95em;
+                font-weight: 600;
+                color: #f5f5f7;
+                background: #0a84ff;
+                padding: 12px 28px;
+                border-radius: 10px;
+                text-decoration: none;
+                transition: background 0.15s ease;
+            }
+
+            /* ---- Sections ---- */
+            h2 {
+                font-size: 1.25em;
+                font-weight: 600;
+                letter-spacing: -0.01em;
+                margin-top: 56px;
+                margin-bottom: 12px;
+                color: #f5f5f7;
+            }
+
+            p {
+                margin-bottom: 16px;
+            }
+
+            figure {
+                margin: 28px 0;
+            }
+
+            figure img {
+                width: 100%;
+                height: auto;
+                border-radius: 10px;
+                box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+                display: block;
+            }
+
+            .demo-video {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                display: block;
+                border-radius: 10px;
+                box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+                background: #151a22;
+            }
+
+            figcaption {
+                font-size: 0.8em;
+                color: #4a5060;
+                margin-top: 8px;
+                text-align: center;
+                line-height: 1.4;
+            }
+
+            kbd + kbd {
+                margin-left: 2px;
+            }
+
+            kbd {
+                display: inline-block;
+                font-family: inherit;
+                font-size: 0.84em;
+                font-weight: 500;
+                line-height: 1;
+                padding: 3px 7px;
+                background: #151a22;
+                border: 1px solid #2a3040;
+                border-radius: 5px;
+                box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+                color: #bbb;
+                white-space: nowrap;
+            }
+
+            strong {
+                font-weight: 600;
+                color: #e0e0e2;
+            }
+
+            ol {
+                margin: 12px 0 16px 24px;
+            }
+
+            ol li {
+                margin-bottom: 4px;
+            }
+
+            hr {
+                height: 2px;
+                border: none;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    #0a84ff,
+                    transparent
+                );
+                border-radius: 2px;
+                box-shadow: 0 4px 16px rgba(10, 132, 255, 0.25);
+                margin: 56px 0;
+            }
+
+            a {
+                color: #5aa5f0;
+                text-decoration: none;
+            }
+
+            a:hover {
+                opacity: 0.8;
+            }
+
+            /* ---- Responsive ---- */
+            @media (max-width: 600px) {
+                body {
+                    font-size: 16px;
+                }
+
+                .page {
+                    padding: 0 16px 48px;
+                }
+
+                .hero {
+                    padding: 48px 0 40px;
+                }
+
+                .hero .app-icon {
+                    width: 96px;
+                    height: 96px;
+                    margin-bottom: 16px;
+                }
+
+                .hero h1 {
+                    font-size: 2em;
+                }
+
+                .hero .tagline {
+                    font-size: 1.05em;
+                }
+
+                h2 {
+                    font-size: 1.15em;
+                    margin-top: 40px;
+                }
+
+                .site-header nav {
+                    gap: 12px;
+                }
+
+                .site-header nav a {
+                    font-size: 0.85em;
+                }
+
+                figure img {
+                    border-radius: 8px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page">
+            <header class="site-header">
+                <a href="https://www.isikdogan.com/" class="logo-link">
+                    <img
+                        src="media/header_logo.svg"
+                        alt="Leo Isikdogan"
+                        class="header-logo"
+                    />
+                </a>
+                <nav>
+                    <a href="https://www.isikdogan.com/">About</a>
+                    <a href="https://www.isikdogan.com/blog/">Blog</a>
+                    <a href="https://www.isikdogan.com/projects.html"
+                        >Research</a
+                    >
+                    <a href="https://www.isikdogan.com/art/">Art</a>
+                </nav>
+            </header>
+            <hr />
+
+            <!-- Hero -->
+            <div class="hero">
+                <div class="hero-media">
+                    <video autoplay loop muted playsinline>
+                        <source
+                            src="media/livcompare-demo.mp4"
+                            type="video/mp4"
+                        />
+                    </video>
+                </div>
+                <div class="hero-content">
+                    <img
+                        src="media/app-icon.png"
+                        alt="LIV Compare icon"
+                        class="app-icon"
+                    />
+                    <h1>LIV Compare</h1>
+                    <p class="tagline">
+                        A minimal image and video comparison tool for macOS.
+                    </p>
+                    <a href="#" class="download-btn">Download for macOS</a>
+                    <p class="meta">v0.2 &middot; Free &middot; macOS 15+</p>
+                </div>
+            </div>
+
+            <p>
+                LIV Compare: Leo's Image &amp; Video Comparison Tool. As the
+                name suggests, it's a media comparison app I built mostly for
+                myself, but it's freely available for anyone who wants to use
+                it.
+            </p>
+            <p>
+                Load up to 4 images or videos at once. Compare grades, edits,
+                codecs, upscaling algorithms, or anything else you want to
+                compare with synchronized playback. Step frame by frame, zoom in
+                and out, switch between views, and export screenshots.
+            </p>
+
+            <video class="demo-video" autoplay loop muted playsinline>
+                <source src="media/livcompare-demo-2.mp4" type="video/mp4" />
+            </video>
+
+            <!-- Loading files -->
+            <h2 id="loading-files">Loading and managing clips</h2>
+
+            <p>
+                Drop files onto the window or press <kbd>Cmd</kbd><kbd>O</kbd>.
+                It supports a range of common image and video formats.
+            </p>
+
+            <p>
+                You can mix videos and images in the same session. Images load
+                as static frames. If they have an embedded color profile, it
+                gets converted automatically so colors display correctly.
+            </p>
+
+            <p>
+                The layout adapts automatically as you load files. One file
+                fills the screen. Two go side-by-side. Three stack in a row.
+                Four form a 2×2 grid.
+            </p>
+
+            <p>
+                It uses the longest clip as the master clock and keeps
+                everything else locked to it. Shorter clips hold their last
+                frame when they reach the end rather than looping or
+                disappearing.
+            </p>
+
+            <p>
+                Click the X on a slot to remove it. The remaining clips shift
+                forward automatically. Drag a slot button onto another to swap
+                their positions. If all 4 slots are full, loading a new file
+                prompts you to pick which one to replace. Duplicates are skipped
+                automatically.
+            </p>
+
+            <!-- Zoom and pan -->
+            <h2 id="zoom-and-pan">Zoom and pan</h2>
+
+            <p>
+                Pinch to zoom on a trackpad, or use the scroll wheel. The zoom
+                always anchors to wherever your cursor is pointing, so you're
+                not constantly re-centering. Press <kbd>Z</kbd> or click the
+                zoom indicator in the toolbar to reset.
+            </p>
+
+            <p>
+                When you're zoomed in, there are two modes.
+                <strong>Bilinear</strong> smooths things out.
+                <strong>Nearest Neighbor</strong> shows raw pixels with no
+                blending.
+            </p>
+
+            <!-- A/B mode and grid mode -->
+            <h2 id="ab-mode">A/B mode and grid mode</h2>
+
+            <p>
+                Grid mode is for seeing everything at once. A/B mode is for when
+                you want to focus on one panel at a time and switch back and
+                forth to spot differences. Press <kbd>1</kbd>, <kbd>2</kbd>,
+                <kbd>3</kbd>, or <kbd>4</kbd>, or click on the slots to solo
+                that clip, and press <kbd>`</kbd> to jump back to the grid.
+                Press <kbd>F</kbd> to go fullscreen, <kbd>Escape</kbd> to exit.
+            </p>
+
+            <!-- Playback controls -->
+            <h2 id="playback-controls">Playback controls</h2>
+
+            <p>
+                <kbd>Space</kbd> to play/pause. <kbd>←</kbd><kbd>→</kbd> step
+                one frame at a time. <kbd>J</kbd> and <kbd>L</kbd> jump back or
+                forward in small increments, and <kbd>Shift</kbd><kbd>J</kbd> /
+                <kbd>Shift</kbd><kbd>L</kbd> jump farther. <kbd>Shift</kbd
+                ><kbd>←</kbd> / <kbd>Shift</kbd><kbd>→</kbd> step through
+                playback speeds (0.25×, 0.5×, 0.75×, 1×, up to 2×), or pick one
+                from the toolbar menu. The scrub bar lets you jump anywhere in
+                the timeline.
+            </p>
+
+            <!-- Audio -->
+            <h2 id="audio">Audio</h2>
+
+            <p>
+                All tracks are muted when you first load them. You can unmute
+                any clip individually with the speaker button in its overlay.
+                <kbd>M</kbd> mutes everything if anything is playing; if all are
+                already muted, it unmutes the first clip.
+            </p>
+
+            <!-- Screenshot export -->
+            <h2 id="screenshot-export">Screenshot export</h2>
+
+            <p>
+                Press <kbd>S</kbd> or click the camera button and you get a PNG
+                of exactly what's on screen without the UI controls.
+            </p>
+
+            <figure>
+                <img
+                    src="media/comparison_2026-03-14_09-39-19.jpg"
+                    alt="Screenshot export save dialog with timestamped filename"
+                />
+                <figcaption>
+                    Save dialog opens with a timestamped filename like
+                    <code
+                        style="
+                            font-family:
+                                &quot;SF Mono&quot;, SFMono-Regular, Menlo,
+                                monospace;
+                            font-size: 0.88em;
+                            background: #151a22;
+                            padding: 2px 6px;
+                            border-radius: 4px;
+                            color: #bbb;
+                        "
+                        >comparison_2026-03-14_09-39-19.png</code
+                    >.
+                </figcaption>
+            </figure>
+
+            <!-- Keyboard shortcuts -->
+            <h2 id="keyboard-shortcuts">Keyboard shortcuts</h2>
+
+            <p>
+                Almost everything has a shortcut. There's a cheat sheet in the
+                app when you click the info button in the toolbar.
+            </p>
+
+            <figure>
+                <img
+                    src="media/keyboard_shortcuts.png"
+                    alt="About popover showing keyboard shortcuts"
+                    style="width: 60%; height: auto; margin: 0 auto"
+                />
+                <figcaption>About popover with keyboard shortcuts.</figcaption>
+            </figure>
+
+            <!-- Installation -->
+            <h2 id="installation">Installation</h2>
+
+            <figure>
+                <img
+                    src="media/installation.webp"
+                    alt="Installing LIV Compare from the DMG"
+                />
+                <figcaption>Installation and opening the app.</figcaption>
+            </figure>
+
+            <p>
+                Because this isn't distributed through the App Store (I'm too
+                cheap to pay the $99 fee), macOS will block it the first time
+                with a warning like
+                <em
+                    >"LIV Compare cannot be opened because the developer cannot
+                    be verified."</em
+                >
+                Here's how to get past it:
+            </p>
+            <p>
+                <strong>System Settings → Privacy &amp; Security</strong>,
+                scroll down, click <strong>Open Anyway</strong>.
+            </p>
+            <p>You only have to do this once. After that it opens normally.</p>
+
+            <hr />
+
+            <p>
+                LIV Compare is free to use for any purpose, including
+                commercial. It is provided as-is with no warranty.
+                Redistribution of the app itself is not permitted.
+            </p>
+
+            <p>
+                That's it! I hope you find it useful. If you run into any issues
+                or have suggestions, <a href="#">open an issue on GitHub</a>.
+            </p>
+        </div>
+    </body>
+</html>
