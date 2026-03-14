@@ -4,6 +4,8 @@
 
 Load up to 4 images or videos at once. Compare grades, edits, codecs, upscaling algos, or anything else you want to compare with synchronized playback. You can step frame by frame, zoom in and out, switch between views, and export screenshots.
 
+![LIV Compare screenshot](media/screenshot.jpg)
+
 [**Download**](https://github.com/livcompare/livcompare.github.io/releases/latest) · [**Homepage**](https://livcompare.github.io)
 
 ## Issues & Feedback
