@@ -1,8 +1,8 @@
 # LIV Compare
 
-**A minimal image and video comparison tool for macOS.**
+**A focused image and video comparison tool for macOS.**
 
-Load up to 4 images or videos at once. Compare grades, edits, codecs, upscaling algos, or anything else you want to compare with synchronized playback. You can step frame by frame, zoom in and out, switch between views, and export screenshots.
+Load up to four images or videos and compare them with synchronized playback in Multi-View, A/B, or Wipe mode. LIV Compare also supports matched-folder navigation, ACES2065-1 EXRs with the ACES 2.0 output transform, frame stepping, shared zoom and pan, playback speed controls, and screenshot export.
 
 ![LIV Compare screenshot](media/screenshot.jpg)
 

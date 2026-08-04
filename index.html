@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
             name="description"
-            content="A free image and video comparison app for macOS."
+            content="Compare images, videos, and ACES EXRs on macOS with synchronized playback, Wipe, A/B, and multi-view modes."
         />
         <title>LIV Compare</title>
         <link rel="icon" href="favicon.ico" />
@@ -370,14 +370,14 @@
                     />
                     <h1>LIV Compare</h1>
                     <p class="tagline">
-                        A minimal image and video comparison tool for macOS.
+                        An image and video comparison tool for macOS.
                     </p>
                     <a
                         href="https://github.com/livcompare/livcompare.github.io/releases/download/v1.0/LIVCompare-1.0.dmg"
                         class="download-btn"
                         >Download for macOS</a
                     >
-                    <p class="meta">v1.0 &middot; Free &middot; macOS 15+</p>
+                    <p class="meta">v1.0 &middot; Free &middot; macOS 14+</p>
                 </div>
             </div>
 
@@ -388,10 +388,8 @@
                 everyone for free.
             </p>
             <p>
-                Load up to 4 images or videos at once. Compare grades, edits,
-                codecs, upscaling algorithms, or anything else you want to
-                compare with synchronized playback. Step frame by frame, zoom in
-                and out, switch between views, and export screenshots.
+                Load up to four files, then compare them in Multi-View, A/B, or
+                Wipe mode. Playback, seeking, zoom, and pan stay in sync.
             </p>
 
             <video class="demo-video" autoplay loop muted playsinline>
@@ -402,13 +400,14 @@
             <h2 id="loading-files">Loading and managing clips</h2>
 
             <p>
-                Drop files onto the window or press <kbd>Cmd</kbd><kbd>O</kbd>.
-                It supports a range of common image and video formats, including ACES2065-1 EXRs.
+                Drop files or folders onto the window, press
+                <kbd>Cmd</kbd><kbd>O</kbd>, or open them from Finder. Common
+                image and video formats can be mixed in the same session.
             </p>
 
             <p>
-                You can mix videos and images in the same session. Images load
-                as static frames.
+                ACES2065-1 EXRs are displayed through the ACES 2.0 output
+                transform. The exposure control makes it easier to inspect scene-linear renders.
             </p>
 
             <p>
@@ -447,16 +446,28 @@
                 blending.
             </p>
 
-            <!-- A/B mode and grid mode -->
-            <h2 id="ab-mode">A/B mode and grid mode</h2>
+            <!-- Comparison modes -->
+            <h2 id="comparison-modes">Multi-View, A/B, and Wipe</h2>
 
             <p>
-                Grid mode is for seeing everything at once. A/B mode is for when
-                you want to focus on one panel at a time and switch back and
-                forth to spot differences. Press <kbd>1</kbd>, <kbd>2</kbd>,
-                <kbd>3</kbd>, or <kbd>4</kbd>, or click on the slots to solo
-                that clip, and press <kbd>`</kbd> to jump back to the grid.
-                Press <kbd>F</kbd> to go fullscreen, <kbd>Escape</kbd> to exit.
+                Multi-View shows every loaded file at once. A/B fills the window
+                with one file and lets you switch with <kbd>1</kbd>–<kbd>4</kbd>.
+                Wipe places any two files on opposite sides of a draggable
+                divider. Choose the A/B pair from the toolbar and press
+                <kbd>W</kbd> to enter the mode. Press <kbd>Q</kbd> to return to
+                Multi-View.
+            </p>
+
+            <!-- Matched sets -->
+            <h2 id="matched-sets">Step through matched folders</h2>
+
+            <p>
+                Drop up to four folders to compare a batch of matching files.
+                LIV Compare pairs files by filename stem, accounts for common
+                underscore suffixes such as <code>_original</code> and
+                <code>_encoded</code>, and skips files without a match in every
+                folder. Use the toolbar arrows or <kbd>[</kbd> and <kbd>]</kbd>
+                to move through the set.
             </p>
 
             <!-- Playback controls -->
@@ -521,15 +532,6 @@
                 Almost everything has a shortcut. There's a cheat sheet in the
                 app when you click the info button in the toolbar.
             </p>
-
-            <figure>
-                <img
-                    src="media/keyboard_shortcuts.png"
-                    alt="About popover showing keyboard shortcuts"
-                    style="width: 50%; height: auto; margin: 0 auto"
-                />
-                <figcaption>About popover with keyboard shortcuts.</figcaption>
-            </figure>
 
             <!-- Installation -->
             <h2 id="installation">Installation</h2>
